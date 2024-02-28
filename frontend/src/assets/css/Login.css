@@ -1,0 +1,29 @@
+input {
+    padding: 10px;
+    margin: 5px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    width: 250px;
+}
+
+button[type="submit"] {
+    background-color: #ffd080;
+    color: #3e3264;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    cursor: pointer;
+}
+
+button[type="submit"]:hover {
+    background-color: #ff9e7d;
+    color: #3e3264;
+}
+
+u{
+    cursor: pointer;
+}
+
+u:hover{
+    color: #ffd080;
+}
