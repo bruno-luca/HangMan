@@ -14,7 +14,7 @@ const Login: FC<LoginPropsI> = ({setPageIndex}) => {
             <form>
                 <input type="text" placeholder="Username"/>
                 <input type="password" placeholder="Password"/>
-                <a href="logged_user.html"  className="button">Login</a>
+                <a className="button" onClick={() => {setPageIndex(3)}}>Login</a>
             </form>
             <p>Need an accout? <u onClick={() => {setPageIndex(2)}}>Signup!</u></p>
         </div>
