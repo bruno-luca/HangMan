@@ -44,8 +44,8 @@ const Hello: FC<HelloPropsI> = ({setPageIndex}) => {
             <span> </span>
             
             gameplay!</p>
-            <Button buttonText='Login' setPageIndex={setPageIndex}/>
-            <Button buttonText='Signup' setPageIndex={setPageIndex}/>
+            <Button buttonText='Login' setPageIndex={setPageIndex} pageIndex={1}/>
+            <Button buttonText='Signup' setPageIndex={setPageIndex} pageIndex={2}/>
 
         </div>
         </>
