@@ -1,6 +1,7 @@
 package com.example.backend.access;
 
 import com.auth0.jwt.interfaces.DecodedJWT;
+import com.example.backend.games.GamesService;
 import com.example.backend.token.JwtUtil;
 import com.example.backend.token.TokenService;
 import com.example.backend.token.TokenStorage;
@@ -40,7 +41,8 @@ public class AuthFilter extends HttpFilter {
     if (
       request.getServletPath().equals(TokenService.LOGIN_PATH) ||
       request.getServletPath().equals(TokenService.LOGOUT_PATH) ||
-      request.getServletPath().equals(RegisterService.REGISTER_PATH)
+      request.getServletPath().equals(RegisterService.REGISTER_PATH) ||
+      request.getServletPath().equals(GamesService.GAMES_PATH)
     ) {
       chain.doFilter(request, response);
 

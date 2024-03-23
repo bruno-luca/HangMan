@@ -65,8 +65,4 @@ public class WordsService {
         result.addProperty("errorMessage", "Error");
         return result;
     }
-
-
-
-
 }

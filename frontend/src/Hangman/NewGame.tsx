@@ -9,13 +9,15 @@ import EndgameModal from "./EndgameModal"
 interface NewGamePropsI {
   setSubpageIndex: (subpageIndex: number) => void
   setPlaying: (subpageIndex: boolean) => void
+  username: string
 }
 
-const NewGame: FC <NewGamePropsI> = ({setSubpageIndex, setPlaying}) => {
+const NewGame: FC <NewGamePropsI> = ({setSubpageIndex, setPlaying, username}) => {
   const [wordToGuess, setWordToGuess] = useState("")
   const [guessedLetters, setGuessedLetters] = useState<string[]>([])
   const [displayValue, setDisplayvalue] = useState("none")
   const [message, setMessage] = useState("")
+  const [gameResult, setGameResult] = useState(-1)
   const incorrectLetters = guessedLetters.filter(letter => !(wordToGuess).includes(letter))
   
   const isLoser = incorrectLetters.length >= 6
@@ -81,9 +83,11 @@ const NewGame: FC <NewGamePropsI> = ({setSubpageIndex, setPlaying}) => {
   useEffect(() => {
     if(isLoser){
       setMessage("Hai perso!")
+      setGameResult(0)
       setDisplayvalue("")
     }else if(isWinner){
       setMessage("Hai vinto!")
+      setGameResult(1)
       setDisplayvalue("")
     }
   }, [guessedLetters])
@@ -99,7 +103,7 @@ const NewGame: FC <NewGamePropsI> = ({setSubpageIndex, setPlaying}) => {
         reveal = {isLoser}
       />
       <div style={{alignSelf: "stretch"}}>
-        <EndgameModal displayValue={displayValue} message={message} setSubpageIndex={setSubpageIndex} setPlaying={setPlaying}></EndgameModal>
+        <EndgameModal displayValue={displayValue} message={message} setSubpageIndex={setSubpageIndex} setPlaying={setPlaying} wordToGuess={wordToGuess} gameResult={gameResult} username={username}></EndgameModal>
         <Keyboard activeLetters={guessedLetters.filter(letter => 
           wordToGuess.includes(letter))}
           inactiveLetters = {incorrectLetters}

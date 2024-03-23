@@ -35,7 +35,7 @@ const Logged:FC <LoggedProposI> = ({setPageIndex, username}) => {
                         alignItems: "center",
                         color: "white"
                     }}>
-                        <NewGame setSubpageIndex={setSubpageIndex} setPlaying={setPlaying}></NewGame>
+                        <NewGame setSubpageIndex={setSubpageIndex} setPlaying={setPlaying} username={username}></NewGame>
                     </div>
                     
                 </div>
