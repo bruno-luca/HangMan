@@ -12,7 +12,7 @@ const Game: FC<GamePropsI> = (GamePropsI) => {
             <tr>
                 <td>{GamePropsI.gameID}</td>
                 <td>{GamePropsI.word}</td>
-                <td>{GamePropsI.win ? ":)" : ":("}</td>
+                <td>{GamePropsI.win ? "VITTORIA" : "SCONFITTA"}</td>
                 <td></td>
             </tr>
         </>

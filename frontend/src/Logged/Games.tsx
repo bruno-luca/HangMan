@@ -1,13 +1,51 @@
-import { FC } from "react";
+import { FC, useEffect, useState } from "react";
 
 import "../assets/css/Games.css"
 import Game from "./Game";
+import axios from "axios";
 
 interface GamesPropsI {
-    setPlaying: (pageIndex: boolean) => void
+    setPlaying: (pageIndex: boolean) => void 
 }
 
 const Games: FC <GamesPropsI> = ({setPlaying}) => {
+    const [games, setGames] = useState([])
+
+    useEffect(() => {
+        const getGames = async () => {
+            try {
+                const jwtoken = "Bearer " + "$" + sessionStorage.getItem("jwtToken");
+                // Effettua la tua autenticazione qui, ad esempio con una chiamata fetch
+                const response = await axios.get(
+                    "http://localhost:8080/backend/game",
+                    {
+                    headers: {
+                        Authorization: jwtoken, // Sostituisci con il tuo token effettivo
+                        "Content-Type": "application/json",
+                    },
+                    }
+                );
+                if (response.status) {
+                    console.log(typeof response.data, response.data)
+                    console.log(JSON.parse(response.data.data))
+                    setGames(JSON.parse(response.data.data));
+                } else {
+                    console.error(JSON.stringify(response, null, 4));
+                }
+            } catch (error) {
+                if (axios.isAxiosError(error)) {
+                    console.log("error message: ", error.message);
+                    return error.message;
+                } else {
+                    console.log("unexpected error: ", error);
+                    return "An unexpected error occurred";
+                }
+            }
+        };
+        getGames();
+    }, [])
+
+    
     return(
         <>
             <div id="partite" className="sottopagina">
@@ -25,10 +63,18 @@ const Games: FC <GamesPropsI> = ({setPlaying}) => {
                                 <th></th>
                             </tr>
                         </thead>
-                        <tbody>
-                            <Game gameID={1} word={"albero"} win={false} ></Game>
-                            <Game gameID={2} word={"scuola"} win={true} ></Game>
-                            <Game gameID={3} word={"affascinante"} win={true} ></Game>
+                        <tbody style={{
+                            height: "50px",
+                            overflow: "scroll"
+                        }}>
+                            {games.map(game => (
+                                <Game
+                                    key={game.id} // Assuming each game has a unique ID
+                                    gameID={game.id}
+                                    word={game.text}
+                                    win={(game.winner)}
+                                />
+                            ))}
                         </tbody>
                     </table>
                 </div>

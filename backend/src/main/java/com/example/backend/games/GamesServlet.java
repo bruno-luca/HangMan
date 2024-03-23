@@ -1,5 +1,6 @@
 package com.example.backend.games;
 
+import com.example.backend.admin.AdminService;
 import com.example.backend.token.TokenStorage;
 import com.example.backend.words.WordsService;
 import com.google.gson.JsonObject;
@@ -23,7 +24,22 @@ public class GamesServlet extends HttpServlet {
     }
 
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        String token = request.getHeader("authorization");
+        System.out.println("Token = " + token);
+
         response.setContentType("application/json");
+        PrintWriter out = response.getWriter();
+        JsonObject result = new JsonObject();
+        String username = TokenStorage.getUsernameFromToken(token);
+
+        GamesService gs = new GamesService();
+        System.out.println("[DEBUG GAME SERVLET] -> status utente: " + username);
+
+        if(username != null) result = gs.getGames(username);
+        else result = gs.errorJsonGame();
+
+
+        out.println(result);
     }
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         response.setContentType("application/json");
@@ -48,7 +64,7 @@ public class GamesServlet extends HttpServlet {
         System.out.println("[DEBUG GAMES SERVLET] -> status utente=" + username + " parola=" + word + " esito: " +((gameResult == 1) ? "vince": "perde"));
 
         if(username != null) result = gs.saveGame(username, word, gameResult == 1);
-        else result = gs.errorJsonWord();
+        else result = gs.errorJsonGame();
 
         out.println(result);
     }

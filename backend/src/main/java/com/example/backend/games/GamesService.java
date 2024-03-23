@@ -1,5 +1,6 @@
 package com.example.backend.games;
 
+import com.example.backend.admin.DataStats;
 import com.example.backend.db.PoolingPersistenceManager;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
@@ -13,13 +14,48 @@ import java.util.ArrayList;
 public class GamesService {
     public static final String GAMES_PATH = "/game";
 
+    public JsonObject getGames(String username){
+        JsonObject res = new JsonObject();
+        GamesListE tmp = null;
+        ArrayList<String> data = new ArrayList<>();
+        int usernameId = getUsernameId(username);
+
+        String query = "SELECT \"Games\".id, text, winner FROM \"HangMan\".public.\"Games\", \"Words\" WHERE \"Words\".id = \"wordId\" AND \"userId\" = ? ORDER BY \"Words\".id DESC";
+        try(
+                Connection conn = PoolingPersistenceManager.getPersistenceManager().getConnection();
+        ) {
+            PreparedStatement st = conn.prepareStatement(query);
+            st.setInt(1, usernameId);
+            Gson gson = new Gson();
+
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                tmp = new GamesListE(rs.getInt(1), rs.getString(2), rs.getBoolean(3));
+                data.add(gson.toJson(tmp));
+            }
+
+            res = responseJsonGame("stats", true, "", data);
+
+            st.close();
+            rs.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            res = errorJsonGame();
+        }
+
+
+
+        return res;
+
+    }
+
     public JsonObject saveGame(String username, String word, boolean winner){
         int usernameId = getUsernameId(username);
         int wordId = getWordId(word);
         System.out.println(usernameId);
         System.out.println(wordId);
 
-        JsonObject result = errorJsonWord();
+        JsonObject result = errorJsonGame();
 
         String query = "INSERT INTO  \"HangMan\".public.\"Games\" (\"wordId\", \"userId\", winner) VALUES (?, ?, ?)";
         String query1 = "UPDATE \"HangMan\".public.\"Stats\" SET " + ((winner) ? "wins = wins + 1 " : "loses = loses + 1 ") + "WHERE id = ?";
@@ -41,7 +77,7 @@ public class GamesService {
 
 
             if (rowsAffected > 0 && rowsAffected1 > 0) {
-                result = responseJsonGame("Save-game", true, "");
+                result = responseJsonGame("Save-game", true, "", null);
             }
             st.close();
         } catch (SQLException e) {
@@ -99,15 +135,16 @@ public class GamesService {
         return id;
     }
 
-    private JsonObject responseJsonGame(String operation, boolean status, String errorMessage) {
+    private JsonObject responseJsonGame(String operation, boolean status, String errorMessage, ArrayList data) {
         JsonObject result = new JsonObject();
         result.addProperty("operation", operation);
         result.addProperty("status", status);
         result.addProperty("errorMessage", errorMessage);
+        result.addProperty("data", String.valueOf(data));
         return result;
     }
 
-    public JsonObject errorJsonWord(){
+    public JsonObject errorJsonGame(){
         JsonObject result = new JsonObject();
         result.addProperty("operation", "game");
         result.addProperty("status", false);
