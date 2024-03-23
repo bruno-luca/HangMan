@@ -4,6 +4,7 @@ import { HangmanDrawing } from "./HangmanDrawing"
 import { HangmanWord } from "./HangmanWord"
 import { Keyboard } from "./Keyboard"
 import axios from "axios"
+import EndgameModal from "./EndgameModal"
 
 interface NewGamePropsI {
   setSubpageIndex: (subpageIndex: number) => void
@@ -13,10 +14,12 @@ interface NewGamePropsI {
 const NewGame: FC <NewGamePropsI> = ({setSubpageIndex, setPlaying}) => {
   const [wordToGuess, setWordToGuess] = useState("")
   const [guessedLetters, setGuessedLetters] = useState<string[]>([])
+  const [displayValue, setDisplayvalue] = useState("none")
+  const [message, setMessage] = useState("")
   const incorrectLetters = guessedLetters.filter(letter => !(wordToGuess).includes(letter))
   
   const isLoser = incorrectLetters.length >= 6
-  const isWinner = wordToGuess.split("").every(letter => guessedLetters.includes(letter))
+  const isWinner = wordToGuess!== "" && wordToGuess.split("").every(letter => guessedLetters.includes(letter))
 
   const addGuessedLetter = useCallback((letter: string) => {
       if(guessedLetters.includes(letter) || isLoser || isWinner) return
@@ -75,15 +78,19 @@ const NewGame: FC <NewGamePropsI> = ({setSubpageIndex, setPlaying}) => {
     }
   }, [guessedLetters])
 
+  useEffect(() => {
+    if(isLoser){
+      setMessage("Hai perso!")
+      setDisplayvalue("")
+    }else if(isWinner){
+      setMessage("Hai vinto!")
+      setDisplayvalue("")
+    }
+  }, [guessedLetters])
+
   return (
     <>
-      <div style={{
-        fontSize: "2rem",
-        textAlign: "center"
-      }}>
-        {isWinner && "Winner! - refresh to try again"}
-        {isLoser && "Loser! - refresh to try again"}
-      </div>
+      
 
       <HangmanDrawing numberOfGuesses = {incorrectLetters.length}/>
       <HangmanWord 
@@ -92,9 +99,10 @@ const NewGame: FC <NewGamePropsI> = ({setSubpageIndex, setPlaying}) => {
         reveal = {isLoser}
       />
       <div style={{alignSelf: "stretch"}}>
+        <EndgameModal displayValue={displayValue} message={message} setSubpageIndex={setSubpageIndex} setPlaying={setPlaying}></EndgameModal>
         <Keyboard activeLetters={guessedLetters.filter(letter => 
           wordToGuess.includes(letter))}
-          inactiveLetters = {incorrectLetters}x
+          inactiveLetters = {incorrectLetters}
           addGuessedLetter = {addGuessedLetter}
           disabled={isWinner || isLoser}/>
       </div>

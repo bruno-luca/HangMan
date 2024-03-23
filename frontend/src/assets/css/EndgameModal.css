@@ -1,0 +1,39 @@
+.endgame-modal-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-top: 11%;
+  }
+  
+  .endgame-glass-pane {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.3); /* sfondo in vetro semi-trasparente */
+  }
+  
+  .endgame-modal {
+    background-color: #ffd080;
+    border-radius: 5px;
+    padding: 10px;
+    position: relative; /* Aggiunto per sovrapporre correttamente il modal */
+    z-index: 999; /* Alza il modal sopra il glass pane */
+  }
+
+  h1{
+    color: black;
+    font-size:40px;
+    font-weight: bolder;
+  }
+  
+  .endgame-content {
+    text-align: center;
+  }
+  
