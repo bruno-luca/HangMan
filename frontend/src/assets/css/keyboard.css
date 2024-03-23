@@ -1,0 +1,29 @@
+.keyboardButton{
+    width: 100%;
+    aspect-ratio: 1/1;
+    font-size: 2.5rem;
+    text-transform: uppercase;
+    font-family: monospace;
+    font-weight: bold;
+    background: none;
+    border: 3px solid #ffd080;
+    border-radius: 5px;
+    color: #ffd080;
+    cursor: pointer;
+}
+
+.active{
+    background-color: #ff9e7d;
+    color: #3e3264;
+}
+
+.inactive{
+    opacity: 10%;
+}
+
+
+.keyboardButton:hover:not(:disabled),
+.keyboardButton:focus:not(:disabled) {
+    background-color: #ff9e7d;
+    color: #3e3264;
+}

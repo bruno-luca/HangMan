@@ -4,16 +4,16 @@ import "../assets/css/Games.css"
 import Game from "./Game";
 
 interface GamesPropsI {
-    setSubpageIndex: (subpageIndex: number) => void
+    setPlaying: (pageIndex: boolean) => void
 }
 
-const Games: FC <GamesPropsI> = (setSubpageIndex) => {
+const Games: FC <GamesPropsI> = ({setPlaying}) => {
     return(
         <>
             <div id="partite" className="sottopagina">
                 <div className="titolo-sottopagina">
                     <div><h2>Elenco Partite</h2></div>
-                    <div><a href="crea_partita.html" className="button">Gioca Nuova Partita</a></div>
+                    <div onClick={() => {setPlaying(true)}}><a className="button">Gioca Nuova Partita</a></div>
                 </div>
                 <div className="contenuto-sottopagina">
                     <table>

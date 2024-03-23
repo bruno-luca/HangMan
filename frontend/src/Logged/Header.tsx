@@ -4,11 +4,12 @@ import "../assets/css/Header.css"
 interface HeaderPropsI{
     setPageIndex: (pageIndex: number) => void
     setSubpageIndex: (pageIndex: number) => void
+    setPlaying: (pageIndex: boolean) => void
     username: String
     subPageIndex: number
 }
 
-const Header: FC<HeaderPropsI> = ({setPageIndex, setSubpageIndex, username, subPageIndex}) => {
+const Header: FC<HeaderPropsI> = ({setPageIndex, setSubpageIndex, setPlaying, username, subPageIndex}) => {
     return (
         <>
             <header>

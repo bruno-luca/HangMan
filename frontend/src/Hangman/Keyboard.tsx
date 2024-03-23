@@ -1,4 +1,4 @@
-import "./keyboard.css"
+import "../assets/css/keyboard.css"
 
 const KEYS = [
     "q",
@@ -47,10 +47,11 @@ export function Keyboard({activeLetters, inactiveLetters, addGuessedLetter, disa
             const isInactive = inactiveLetters.includes(key)
 
             return (
-            <button 
+            <div 
                 onClick={() => addGuessedLetter(key)}
                 key={key}
                 className={`
+                    keyboardButton
                     ${isActive ? "active" : ""}
                     ${isInactive ? "inactive" : ""}
                 `}
@@ -58,7 +59,7 @@ export function Keyboard({activeLetters, inactiveLetters, addGuessedLetter, disa
 
             >
                 {key}
-            </button>)
+            </div>)
         })}
 
     </div>

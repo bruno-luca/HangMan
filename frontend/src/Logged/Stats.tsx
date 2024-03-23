@@ -5,10 +5,9 @@ import axios from "axios";
 import Stat from "./Stat";
 
 interface StatsPropsI {
-    setSubpageIndex: (subpageIndex: number) => void
 }
 
-const Stats: FC <StatsPropsI> = (setSubpageIndex) => {
+const Stats: FC <StatsPropsI> = () => {
     const [stats, setStats] = useState([])
 
     useEffect(() => {
