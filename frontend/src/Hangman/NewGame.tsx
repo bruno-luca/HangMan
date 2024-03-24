@@ -59,8 +59,8 @@ const NewGame: FC <NewGamePropsI> = ({setSubpageIndex, setPlaying, username}) =>
         }
       }
     }
-
-    getWord()
+    // testare se viene eseguito solo più una volta
+    return () => getWord()
   }, [])
 
   useEffect(() => {

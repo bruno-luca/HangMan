@@ -5,10 +5,11 @@ import com.example.backend.db.PoolingPersistenceManager;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 public class GamesService {
@@ -20,7 +21,7 @@ public class GamesService {
         ArrayList<String> data = new ArrayList<>();
         int usernameId = getUsernameId(username);
 
-        String query = "SELECT \"Games\".id, text, winner FROM \"HangMan\".public.\"Games\", \"Words\" WHERE \"Words\".id = \"wordId\" AND \"userId\" = ? ORDER BY \"Words\".id DESC";
+        String query = "SELECT \"Games\".id, text, winner FROM \"HangMan\".public.\"Games\", \"Words\" WHERE \"Words\".id = \"wordId\" AND \"userId\" = ? ORDER BY date DESC, \"time\" DESC";
         try(
                 Connection conn = PoolingPersistenceManager.getPersistenceManager().getConnection();
         ) {
@@ -57,7 +58,7 @@ public class GamesService {
 
         JsonObject result = errorJsonGame();
 
-        String query = "INSERT INTO  \"HangMan\".public.\"Games\" (\"wordId\", \"userId\", winner) VALUES (?, ?, ?)";
+        String query = "INSERT INTO  \"HangMan\".public.\"Games\" (\"wordId\", \"userId\", winner, date, time) VALUES (?, ?, ?, ?, ?)";
         String query1 = "UPDATE \"HangMan\".public.\"Stats\" SET " + ((winner) ? "wins = wins + 1 " : "loses = loses + 1 ") + "WHERE id = ?";
         try (
                 Connection conn = PoolingPersistenceManager
@@ -69,6 +70,9 @@ public class GamesService {
             st.setInt(1, wordId);
             st.setInt(2, usernameId);
             st.setBoolean(3, winner);
+            st.setDate(4, Date.valueOf(LocalDate.now()));
+            st.setTime(5, Time.valueOf(LocalTime.now())
+            );
             int rowsAffected = st.executeUpdate();
 
             st = conn.prepareStatement(query1);
