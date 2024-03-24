@@ -1,0 +1,62 @@
+
+.sottopagina {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+.post-container{
+    width: 50%;
+    min-width: 500px;
+    background-color: none;
+    height: 500px;
+    
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+
+    overflow: scroll;
+    scrollbar-width: none;
+}
+.post-container::-webkit-scrollbar {
+    width: 0; /* Nasconde la scrollbar in Chrome/Safari */
+}
+
+.post{
+    background-color: #3b325b;
+    margin: 20px;
+    box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.3);
+    border-radius: 20px;
+
+}
+
+.title{
+    background-color: none;
+    margin: 20px;
+    height: 50px;
+    color: #fab846;
+
+    font-size: 1.7em;
+
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.author{
+    font-weight: bold;
+}
+
+.timestamp{
+    margin-left: 10px;
+    color: rgb(102, 102, 102);
+
+    font-size: medium;
+}
+
+.content{
+    text-align: justify;
+    
+    margin: 20px;
+}

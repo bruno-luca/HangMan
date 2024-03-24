@@ -11,6 +11,9 @@ import jakarta.servlet.annotation.WebFilter;
 import jakarta.servlet.http.HttpFilter;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import pinboard.PinboardService;
+import pinboard.PinboardServlet;
+
 import java.io.IOException;
 
 @WebFilter(urlPatterns = "*")
@@ -38,12 +41,11 @@ public class AuthFilter extends HttpFilter {
       return;
     }
 
-    if (
-      request.getServletPath().equals(TokenService.LOGIN_PATH) ||
-      request.getServletPath().equals(TokenService.LOGOUT_PATH) ||
-      request.getServletPath().equals(RegisterService.REGISTER_PATH) ||
-      request.getServletPath().equals(GamesService.GAMES_PATH)
-    ) {
+    if (request.getServletPath().equals(TokenService.LOGIN_PATH) ||
+            request.getServletPath().equals(TokenService.LOGOUT_PATH) ||
+            request.getServletPath().equals(RegisterService.REGISTER_PATH) ||
+            request.getServletPath().equals(GamesService.GAMES_PATH) ||
+            request.getServletPath().equals(PinboardService.PINBOARD_PATH)) {
       chain.doFilter(request, response);
 
       return;

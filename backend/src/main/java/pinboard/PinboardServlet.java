@@ -1,6 +1,6 @@
-package com.example.backend.admin;
+package pinboard;
 
-import com.example.backend.token.TokenService;
+import com.example.backend.admin.AdminService;
 import com.example.backend.token.TokenStorage;
 import com.google.gson.JsonObject;
 import jakarta.servlet.annotation.WebServlet;
@@ -10,14 +10,12 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.Arrays;
 
 @WebServlet(
-        name = "Admin_Servlet" ,
-        urlPatterns = {AdminService.STATS_PATH}
+        name = "Pinboard_Servlet" ,
+        urlPatterns = {PinboardService.PINBOARD_PATH}
 )
-
-public class AdminServlet extends HttpServlet {
+public class PinboardServlet extends HttpServlet {
     public void init(){
 
     }
@@ -32,16 +30,14 @@ public class AdminServlet extends HttpServlet {
         String username = TokenStorage.getUsernameFromToken(token);
         int privilege = TokenStorage.getPrivilegi(username);
 
-        AdminService as = new AdminService();
-        System.out.println("[DEBUG ADMIN SERVLET] -> status utente: " + username);
+        PinboardService ps = new PinboardService();
+        System.out.println("[DEBUG PINBOARD SERVLET] -> status utente: " + username);
 
-        if(privilege == 1) result = as.getStats();
-        else result = as.errorJsonStats();
-
+        if(username != null) result = ps.getMessages();
+        else result = ps.errorJsonMessage("Permission denied");
 
         out.println(result);
     }
-
 
     public void destroy(){
 

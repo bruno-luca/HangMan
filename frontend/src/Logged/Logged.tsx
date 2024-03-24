@@ -3,6 +3,7 @@ import Header from "./Header";
 import Games from "./Games";
 import Stats from "./Stats";
 import NewGame from "../Hangman/NewGame";
+import Posts from "./Posts";
 
 interface LoggedProposI{
     setPageIndex: (pageIndex: number) => void
@@ -17,6 +18,7 @@ const Logged:FC <LoggedProposI> = ({setPageIndex, username}) => {
         
             {!playing && <Header setPageIndex={setPageIndex} setSubpageIndex={setSubpageIndex}  setPlaying={setPlaying} subPageIndex={subpageIndex} username={username}></Header>}
             {!playing && subpageIndex == 0 && <Games setPlaying={setPlaying}></Games>}
+            {!playing && subpageIndex == 1 && <Posts></Posts>}
             {!playing && subpageIndex == 2 && <Stats></Stats>}
             {playing  && 
                 <div style={{
