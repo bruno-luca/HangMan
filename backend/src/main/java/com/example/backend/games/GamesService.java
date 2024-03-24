@@ -44,10 +44,7 @@ public class GamesService {
             res = errorJsonGame();
         }
 
-
-
         return res;
-
     }
 
     public JsonObject saveGame(String username, String word, boolean winner){

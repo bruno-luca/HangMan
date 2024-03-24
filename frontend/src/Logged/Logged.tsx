@@ -11,8 +11,9 @@ interface LoggedProposI{
 }
 
 const Logged:FC <LoggedProposI> = ({setPageIndex, username}) => {
-    const [subpageIndex, setSubpageIndex] = useState(0);
+    const [subpageIndex, setSubpageIndex] = useState(0)
     const [playing, setPlaying] = useState(false)
+
     return(
         <>
         

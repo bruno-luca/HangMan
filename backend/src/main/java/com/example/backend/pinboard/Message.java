@@ -1,4 +1,4 @@
-package pinboard;
+package com.example.backend.pinboard;
 
 public class Message {
     private String author;

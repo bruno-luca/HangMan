@@ -1,0 +1,49 @@
+.post-modal-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-top: 11%;
+}
+
+.post-glass-pane {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* sfondo in vetro semi-trasparente */
+}
+
+.post-modal {
+    background-color: #3b325b;
+    color: white;
+    width: 40rem;
+    height: 25rem;
+    border-radius: 5px;
+    padding: 10px;
+    position: relative; /* Aggiunto per sovrapporre correttamente il modal */
+    z-index: 999; /* Alza il modal sopra il glass pane */
+}
+
+h1 {
+    color: white;
+    font-size: 40px;
+    font-weight: bolder;
+}
+
+.post-content {
+    text-align: center;
+}
+
+.post-input{
+    border-radius: 10px;
+    width: 35rem;
+    height: 12rem;
+    resize: none;
+    overflow-y: auto; /* Abilita lo scorrimento verticale quando necessario */
+}

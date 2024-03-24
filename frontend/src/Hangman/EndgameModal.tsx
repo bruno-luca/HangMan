@@ -54,7 +54,7 @@ const EndgameModal: FC<EndgameModalProps> = ({ message, displayValue, setSubpage
             return "An unexpected error occurred";
         }
     }
-};
+  };
 
   return (
     <div className="endgame-modal-container" style={{display: displayValue}}>

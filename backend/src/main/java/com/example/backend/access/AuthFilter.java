@@ -11,8 +11,7 @@ import jakarta.servlet.annotation.WebFilter;
 import jakarta.servlet.http.HttpFilter;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import pinboard.PinboardService;
-import pinboard.PinboardServlet;
+import com.example.backend.pinboard.PinboardService;
 
 import java.io.IOException;
 
