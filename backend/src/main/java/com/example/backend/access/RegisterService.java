@@ -1,6 +1,7 @@
 package com.example.backend.access;
 
 import com.example.backend.db.PoolingPersistenceManager;
+import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import java.sql.*;
 
@@ -48,36 +49,65 @@ public class RegisterService {
     return state;
   }
 
-  public boolean RegisterUsername(
-    String username,
-    String password,
-    int admin
-  ) {
+  public boolean RegisterUsername(String username, String password, int admin) {
     boolean result = false;
 
-    String query =
-      "INSERT INTO \"HangMan\".public.\"Users\" (username,password,admin) VALUES (?,?,?)";
+    String query = "INSERT INTO \"HangMan\".public.\"Users\" (username,password,admin) VALUES (?,?,?)";
+    String query1 = "INSERT INTO \"HangMan\".public.\"Stats\" (id,wins,loses) VALUES (?,?,?)";
     try (
       Connection conn = PoolingPersistenceManager
         .getPersistenceManager()
         .getConnection()
     ) {
-      PreparedStatement st = conn.prepareStatement(query);
-      st.setString(1, username);
-      st.setString(2, password);
-      st.setInt(3, admin);
+      if(getUsernameId(username) == -1){
+        PreparedStatement st = conn.prepareStatement(query);
+        st.setString(1, username);
+        st.setString(2, password);
+        st.setInt(3, admin);
 
-      int rowsAffected = st.executeUpdate();
+        int rowsAffected = st.executeUpdate();
 
-      if (rowsAffected > 0) {
+        st = conn.prepareStatement(query1);
+        st.setInt(1, getUsernameId(username));
+        st.setInt(2, 0);
+        st.setInt(3, 0);
 
-        result = true;
+        int rowsAffected1 = st.executeUpdate();
+
+        if (rowsAffected > 0 && rowsAffected1 > 0) {
+
+          result = true;
+        }
+        st.close();
       }
-      st.close();
     } catch (SQLException e) {
       e.printStackTrace();
     }
 
     return result;
+  }
+
+  private int getUsernameId(String username) {
+    int id = -1;
+
+    String query = "SELECT id FROM \"HangMan\".public.\"Users\" WHERE username = ?";
+    try (
+            Connection conn = PoolingPersistenceManager.getPersistenceManager().getConnection();
+    ) {
+      PreparedStatement st = conn.prepareStatement(query);
+      st.setString(1, username);
+      Gson gson = new Gson();
+
+      ResultSet rs = st.executeQuery();
+
+      if (rs.next()) id = rs.getInt("id");
+
+      st.close();
+      rs.close();
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
+
+    return id;
   }
 }
