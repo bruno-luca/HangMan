@@ -1,8 +1,11 @@
 package com.example.backend.access;
 
 import com.example.backend.db.PoolingPersistenceManager;
+import com.google.gson.Gson;
 
 import java.sql.*;
+import java.time.LocalDate;
+import java.time.LocalTime;
 
 public class LoginManager {
 
@@ -54,14 +57,39 @@ public class LoginManager {
         Time currentTime = new Time(System.currentTimeMillis());
         try (Connection conn = PoolingPersistenceManager.getPersistenceManager().getConnection()) {
             PreparedStatement st = conn.prepareStatement(
-                    "INSERT INTO \"HangMan\".public.\"AccessLog\" (data_accesso, username, ora_accesso) VALUES (?, ?, ?)");
-            st.setDate(1, currentDate);
-            st.setString(2, username);
-            st.setTime(3, currentTime);
+                    "INSERT INTO \"HangMan\".public.\"AccessLog\" (\"userId\", date, time) VALUES (?, ?, ?)");
+            st.setInt(1, getUsernameId(username));
+            st.setDate(2, Date.valueOf(LocalDate.now()));
+            st.setTime(3, Time.valueOf(LocalTime.now()));
 
             ResultSet rs = st.executeQuery();
         } catch (SQLException ex) {
+            ex.printStackTrace();
         }
+    }
+
+    private int getUsernameId(String username){
+        int id = -1;
+
+        String query = "SELECT id FROM \"HangMan\".public.\"Users\" WHERE username = ?";
+        try(
+                Connection conn = PoolingPersistenceManager.getPersistenceManager().getConnection();
+        ) {
+            PreparedStatement st = conn.prepareStatement(query);
+            st.setString(1, username);
+            Gson gson = new Gson();
+
+            ResultSet rs = st.executeQuery();
+
+            if (rs.next()) id = rs.getInt("id");
+
+            st.close();
+            rs.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return id;
     }
 
 }
